@@ -35,13 +35,14 @@ describe('gulp-filesnames', (): void => {
             });
     });
 
-    it('Should support absolute paths', (done): void => {
+    it('Should support base paths', (done): void => {
         src('test/files/**/*.*')
             .pipe(filenames())
             .pipe(dest('test/dump/'))
             .on('end', (): void => {
                 filenames.get(filenames.DEFAULT, 'base').forEach((file: string): void => {
-                    expect(file.includes('test/files/')).toBeTruthy();
+                    console.log(file);
+                    expect(file.includes('test/files')).toBeTruthy();
                 });
 
                 done();
