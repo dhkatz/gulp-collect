@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "4"
-  - "5"
-  - "5.1"
-  - "6"
-after_script:
-  - npm test
+  - '10'
+env:
+  - NODE_ENV=test
+before_install:
+  - npm install -D
+script:
+  - npm run build
+  - npm run coverage

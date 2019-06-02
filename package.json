@@ -1,44 +1,125 @@
 {
   "name": "gulp-filenames",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Register every filename that has passed through",
   "keywords": [
     "gulpplugin"
   ],
   "author": {
-    "name": "Joao Dias",
-    "email": "joao.l.d.a@hotmail.com",
-    "url": "https://github.com/JohnyDays"
+    "name": "David Katz",
+    "email": "dhkatz.16@gmail.com"
   },
   "contributors": [
-	{
-	"name": "Bruce MacNaughton",
-	"email": "bmacnaughton@gmail.com"
-	}
+    {
+      "name": "Joao Dias",
+      "email": "joao.l.d.a@hotmail.com",
+      "url": "https://github.com/JohnyDays"
+    },
+    {
+      "name": "Bruce MacNaughton",
+      "email": "bmacnaughton@gmail.com"
+    }
   ],
-  "repository": "JohnyDays/gulp-filenames",
+  "repository": "dhkatz/gulp-filenames",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register test",
-	  "debtest": "node-inspector -p 9999 & mocha --compilers coffee:coffee-script/register test --debug-brk",
-    "build": "coffee -c -w index.coffee",
-    "btest": "coffee -c test/main.coffee"
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "lint": "eslint src/**/* && tsc --noEmit",
+    "test": "jest --verbose --forceExit --detectOpenHandles",
+    "test:coverage": "jest --coverage --ci --verbose --forceExit --detectOpenHandles"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/gulp": "^4.0.6",
+    "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.4",
+    "@types/through2": "^2.0.34",
+    "@types/vinyl": "^2.0.3",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "gulp": "^4.0.2",
+    "jest": "^24.8.0",
+    "typescript": "^3.5.1",
+    "vinyl": "^2.2.0",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "useBuiltIns": "entry",
+          "corejs": "3"
+        }
+      ],
+      "@babel/typescript"
+    ],
+    "plugins": [
+      [
+        "@babel/proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/proposal-object-rest-spread"
+    ],
+    "sourceMaps": "inline"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "collectCoverageFrom": [
+      "!<rootDir>/src/util/**/*",
+      "<rootDir>/src/**/*.{ts,tsx}"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es6": true,
+      "browser": true,
+      "jest": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-console": "off",
+      "no-dupe-class-members": "off",
+      "@typescript-eslint/indent": [
+        "error",
+        4
+      ]
+    }
   },
   "dependencies": {
-    "gulp-util": ">=2.2.0",
-    "through2": "*"
-  },
-  "devDependencies": {
-    "coffee-script": "^1.10.0",
-    "coveralls": "*",
-    "event-stream": "*",
-    "gulp": "^3.8.5",
-    "mocha": "*",
-    "should": "^2.1.0",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "engines": {
-    "node": ">=0.8.0",
-    "npm": ">=1.2.10"
-  },
-  "license": "MIT"
+    "through2": "^3.0.1"
+  }
 }
