@@ -1,7 +1,7 @@
 
 # gulp-filenames
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency Status][depstat-image]][depstat-url]
+[![GitHub version](https://badge.fury.io/gh/dhkatz%2Fgulp-filenames.svg)](https://badge.fury.io/gh/dhkatz%2Fgulp-filenames) [![Build Status](https://travis-ci.com/dhkatz/gulp-filenames.svg?branch=master)](https://travis-ci.com/dhkatz/gulp-filenames)  [![Coverage Status](https://coveralls.io/repos/github/dhkatz/gulp-filenames/badge.svg?branch=master)](https://coveralls.io/github/dhkatz/gulp-filenames?branch=master) [![dependencies Status](https://david-dm.org/dhkatz/gulp-filenames/status.svg)](https://david-dm.org/dhkatz/gulp-filenames)
 
 A JavaScript/TypeScript file name gathering plugin for [gulp](https://github.com/gulpjs/gulp)
 
