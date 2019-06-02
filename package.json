@@ -27,7 +27,8 @@
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "lint": "eslint src/**/* && tsc --noEmit",
     "test": "jest --verbose --forceExit --detectOpenHandles",
-    "test:coverage": "jest --coverage --ci --verbose --forceExit --detectOpenHandles"
+    "test:coverage": "jest --coverage --ci --verbose --forceExit --detectOpenHandles",
+    "coverage": "jest --coverage --ci --verbose --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls && rm -rf /coverage"
   },
   "license": "MIT",
   "devDependencies": {
