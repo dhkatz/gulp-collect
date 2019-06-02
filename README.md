@@ -1,14 +1,14 @@
 
 # gulp-filenames
 
-[![GitHub version](https://badge.fury.io/gh/dhkatz%2Fgulp-filenames.svg)](https://badge.fury.io/gh/dhkatz%2Fgulp-filenames) [![Build Status](https://travis-ci.com/dhkatz/gulp-filenames.svg?branch=master)](https://travis-ci.com/dhkatz/gulp-filenames)  [![Coverage Status](https://coveralls.io/repos/github/dhkatz/gulp-filenames/badge.svg?branch=master)](https://coveralls.io/github/dhkatz/gulp-filenames?branch=master) [![dependencies Status](https://david-dm.org/dhkatz/gulp-filenames/status.svg)](https://david-dm.org/dhkatz/gulp-filenames)
+[![GitHub version](https://badge.fury.io/gh/dhkatz%2Fgulp-filename.svg)](https://badge.fury.io/gh/dhkatz%2Fgulp-filename) [![Build Status](https://travis-ci.com/dhkatz/gulp-filename.svg?branch=master)](https://travis-ci.com/dhkatz/gulp-filename)  [![Coverage Status](https://coveralls.io/repos/github/dhkatz/gulp-filename/badge.svg?branch=master)](https://coveralls.io/github/dhkatz/gulp-filename?branch=master) [![dependencies Status](https://david-dm.org/dhkatz/gulp-filename/status.svg)](https://david-dm.org/dhkatz/gulp-filename)
 
 A JavaScript/TypeScript file name gathering plugin for [gulp](https://github.com/gulpjs/gulp)
 
 ## Installation
 
 ```shell
-npm install --save-dev dhkatz/gulp-filenames
+npm install --save-dev gulp-filename
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ npm install --save-dev dhkatz/gulp-filenames
 Then, add it to your `gulpfile.js`:
 
 ```typescript
-const filenames = require('gulp-filenames');
+const filenames = require('gulp-filename');
 
 gulp.src('src/**/*.ts')
 	.pipe(filenames('typescript'))

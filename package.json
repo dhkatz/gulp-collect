@@ -1,7 +1,9 @@
 {
-  "name": "gulp-filenames",
+  "name": "gulp-filename",
   "version": "5.0.0",
   "description": "Register every filename that has passed through",
+  "files": ["lib/", "typings/", "test/"],
+  "types": "typings/index.d.ts",
   "keywords": [
     "gulpplugin"
   ],
@@ -20,7 +22,7 @@
       "email": "bmacnaughton@gmail.com"
     }
   ],
-  "repository": "dhkatz/gulp-filenames",
+  "repository": "dhkatz/gulp-filename",
   "scripts": {
     "build": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",

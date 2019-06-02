@@ -3,7 +3,7 @@ import { src, dest } from 'gulp';
 import { Transform } from 'stream';
 import source from 'vinyl-source-stream';
 
-import filenames from '../src';
+import filenames from '../lib';
 
 
 describe('gulp-filesnames', (): void => {
