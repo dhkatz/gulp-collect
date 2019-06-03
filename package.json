@@ -30,7 +30,7 @@
     "lint": "eslint src/**/* && tsc --noEmit",
     "test": "jest --ci --verbose --forceExit --detectOpenHandles",
     "test:coverage": "jest --coverage --ci",
-    "coverage": "./node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls"
+    "coverage": "./node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "license": "MIT",
   "devDependencies": {
