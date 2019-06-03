@@ -1,6 +1,6 @@
 {
   "name": "gulp-filename",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Register every filename that has passed through",
   "files": ["lib/", "typings/", "test/"],
   "types": "typings/index.d.ts",
@@ -28,9 +28,9 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "lint": "eslint src/**/* && tsc --noEmit",
-    "test": "jest --verbose --forceExit --detectOpenHandles",
-    "test:coverage": "jest --coverage --ci --verbose --forceExit --detectOpenHandles",
-    "coverage": "jest --coverage --ci --verbose --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls && rm -rf /coverage"
+    "test": "jest --ci --verbose --forceExit --detectOpenHandles",
+    "test:coverage": "jest --coverage --ci",
+    "coverage": "jest --coverage --ci --coverageReporters=text-lcov | coveralls"
   },
   "license": "MIT",
   "devDependencies": {

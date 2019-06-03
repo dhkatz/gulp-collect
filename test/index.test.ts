@@ -14,7 +14,7 @@ describe('gulp-filesnames', (): void => {
     it('Should grab the name of every file that passes through it', (done): void => {
         src('test/files/**/*.*')
             .pipe(filenames())
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get()).toEqual(['a.cc', 'a.empty', 'a.txt','b.txt']);
 
@@ -25,7 +25,7 @@ describe('gulp-filesnames', (): void => {
     it('Should support absolute paths', (done): void => {
         src('test/files/**/*.*')
             .pipe(filenames())
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 filenames.get(filenames.DEFAULT, 'absolute').forEach((file: string): void => {
                     expect(file.includes('test/files/')).toBeTruthy();
@@ -38,7 +38,7 @@ describe('gulp-filesnames', (): void => {
     it('Should support base paths', (done): void => {
         src('test/files/**/*.*')
             .pipe(filenames())
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 filenames.get(filenames.DEFAULT, 'base').forEach((file: string): void => {
                     console.log(file);
@@ -52,7 +52,7 @@ describe('gulp-filesnames', (): void => {
     it('Supports namespacing', (done): void => {
         src('test/files/**/*.txt')
             .pipe(filenames('txt'))
-            .pipe(dest('test/dump'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get('txt')).toEqual(['a.txt', 'b.txt']);
 
@@ -63,7 +63,7 @@ describe('gulp-filesnames', (): void => {
     it('Can retrieve different things using options', (done): void => {
         src('test/files/**/*.txt')
             .pipe(filenames('txt'))
-            .pipe(dest('test/dump'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(typeof filenames.get('txt', 'all')[0]).toBe('object');
                 expect(typeof filenames.get('txt', 'relative')[0]).toBe('string');
@@ -75,7 +75,7 @@ describe('gulp-filesnames', (): void => {
     it('Can forget', (done): void => {
         src('test/files/**/*.txt')
             .pipe(filenames('txt'))
-            .pipe(dest('test/dump'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get('txt')).toHaveLength(2);
 
@@ -90,13 +90,13 @@ describe('gulp-filesnames', (): void => {
     it('Support overriding previous file on new one through override', (done): void => {
         src('test/files/**/*.*')
             .pipe(filenames('override'))
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get('override')).toEqual(['a.cc', 'a.empty', 'a.txt','b.txt']);
 
                 src('test/files/**/*.txt')
                     .pipe(filenames('override', { override: true }))
-                    .pipe(dest('test/dump/'))
+                    .pipe(dest('.temp/'))
                     .on('end', (): void => {
                         expect(filenames.get('override')).toHaveLength(2);
 
@@ -108,7 +108,7 @@ describe('gulp-filesnames', (): void => {
     it('Supports empty files', (done): void => {
         src('test/files/**/*.empty')
             .pipe(filenames())
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get()).toEqual(['a.empty']);
 
@@ -125,7 +125,7 @@ describe('gulp-filesnames', (): void => {
     it('Should allow the \'default\' namespace', (done): void => {
         src('test/files/**/*.*')
             .pipe(filenames('default'))
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get('default')).toEqual(['a.cc', 'a.empty', 'a.txt','b.txt']);
 
@@ -137,7 +137,7 @@ describe('gulp-filesnames', (): void => {
         createReadStream('test/files/a.cc')
             .pipe(source('a.cc'))
             .pipe(filenames('streams'))
-            .pipe(dest('test/dump/'))
+            .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get('streams')).toEqual(['a.cc']);
 
