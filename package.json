@@ -30,7 +30,7 @@
     "lint": "eslint src/**/* && tsc --noEmit",
     "test": "jest --ci --verbose --forceExit --detectOpenHandles",
     "test:coverage": "jest --coverage --ci",
-    "coverage": "jest --coverage --ci --coverageReporters=text-lcov | coveralls"
+    "coverage": "./node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls"
   },
   "license": "MIT",
   "devDependencies": {
@@ -87,7 +87,6 @@
       "^@/(.*)$": "<rootDir>/src/$1"
     },
     "collectCoverageFrom": [
-      "!<rootDir>/src/util/**/*",
       "<rootDir>/src/**/*.{ts,tsx}"
     ]
   },
