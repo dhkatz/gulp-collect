@@ -28,7 +28,7 @@ export class Filenames extends Function {
 
     public constructor() {
         super();
-        
+
         return new Proxy(this, {
             // eslint-disable-next-line
             apply: (target: this, thisArg: this, args: any[]): any => {
@@ -62,6 +62,7 @@ export class Filenames extends Function {
     public get(name: 'all' | string | symbol = this.DEFAULT, type: PathType = 'relative'): Map<string | symbol, File[]> | string[] | File[] {
         if (typeof name === 'string' && name === 'all') return this.names;
 
+        /* istanbul ignore next */
         if (!this.names.has(name)) this.names.set(name, []);
 
         const files = this.names.get(name);
@@ -92,7 +93,7 @@ export class Filenames extends Function {
     }
 
     public register(file: vinyl.StreamFile, name: string | symbol = this.DEFAULT, options: Options = { override: false }): void {
-        if (options.override || !this.names.has(name))  {
+        if (options.override || !this.names.has(name)) {
             this.names.set(name, []);
         }
 

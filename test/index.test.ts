@@ -1,12 +1,13 @@
 import { createReadStream } from 'fs';
+import { isAbsolute } from 'path';
 import { src, dest } from 'gulp';
 import { Transform } from 'stream';
 import source from 'vinyl-source-stream';
 
-import filenames from '../lib';
+import filenames from '../src';
 
 
-describe('gulp-filesnames', (): void => {
+describe('gulp-filename', (): void => {
     afterEach((): void => {
         filenames.forget('all');
     });
@@ -16,7 +17,7 @@ describe('gulp-filesnames', (): void => {
             .pipe(filenames())
             .pipe(dest('.temp/'))
             .on('end', (): void => {
-                expect(filenames.get()).toEqual(['a.cc', 'a.empty', 'a.txt','b.txt']);
+                expect(filenames.get()).toEqual(['a.cc', 'a.empty', 'a.txt', 'b.txt']);
 
                 done();
             });
@@ -28,7 +29,7 @@ describe('gulp-filesnames', (): void => {
             .pipe(dest('.temp/'))
             .on('end', (): void => {
                 filenames.get(filenames.DEFAULT, 'absolute').forEach((file: string): void => {
-                    expect(file.includes('test/files/')).toBeTruthy();
+                    expect(isAbsolute(file)).toBeTruthy();
                 });
 
                 done();
@@ -41,8 +42,7 @@ describe('gulp-filesnames', (): void => {
             .pipe(dest('.temp/'))
             .on('end', (): void => {
                 filenames.get(filenames.DEFAULT, 'base').forEach((file: string): void => {
-                    console.log(file);
-                    expect(file.includes('test/files')).toBeTruthy();
+                    expect(isAbsolute(file)).toBeTruthy();
                 });
 
                 done();
@@ -92,7 +92,7 @@ describe('gulp-filesnames', (): void => {
             .pipe(filenames('override'))
             .pipe(dest('.temp/'))
             .on('end', (): void => {
-                expect(filenames.get('override')).toEqual(['a.cc', 'a.empty', 'a.txt','b.txt']);
+                expect(filenames.get('override')).toEqual(['a.cc', 'a.empty', 'a.txt', 'b.txt']);
 
                 src('test/files/**/*.txt')
                     .pipe(filenames('override', { override: true }))
@@ -127,7 +127,7 @@ describe('gulp-filesnames', (): void => {
             .pipe(filenames('default'))
             .pipe(dest('.temp/'))
             .on('end', (): void => {
-                expect(filenames.get('default')).toEqual(['a.cc', 'a.empty', 'a.txt','b.txt']);
+                expect(filenames.get('default')).toEqual(['a.cc', 'a.empty', 'a.txt', 'b.txt']);
 
                 done();
             });
@@ -140,6 +140,21 @@ describe('gulp-filesnames', (): void => {
             .pipe(dest('.temp/'))
             .on('end', (): void => {
                 expect(filenames.get('streams')).toEqual(['a.cc']);
+
+                done();
+            });
+    });
+
+    it('Should allow retrieving the all namespace', (done): void => {
+        src('test/files/**/*.*')
+            .pipe(filenames())
+            .pipe(dest('.temp/'))
+            .on('end', (): void => {
+                const names = filenames.get('all');
+
+                expect(names).toBeInstanceOf(Map);
+                expect(names.size).toBe(1);
+                expect(names.get(filenames.DEFAULT).length).toBe(4);
 
                 done();
             });
