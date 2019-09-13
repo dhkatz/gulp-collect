@@ -54,7 +54,7 @@
     "eslint": "^5.16.0",
     "gulp": "^4.0.2",
     "jest": "^24.9.0",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^24.1.0",
     "typescript": "^3.5.3",
     "vinyl": "^2.2.0",
     "vinyl-source-stream": "^2.0.0"
