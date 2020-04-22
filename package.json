@@ -50,7 +50,7 @@
     "@types/vinyl-source-stream": "0.0.30",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
-    "coveralls": "^3.0.6",
+    "coveralls": "^3.0.13",
     "eslint": "^5.16.0",
     "gulp": "^4.0.2",
     "jest": "^24.9.0",
