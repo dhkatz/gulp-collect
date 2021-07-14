@@ -1,6 +1,6 @@
 # @gulp-plugin/collect
 
-[![GitHub version](https://badge.fury.io/gh/dhkatz%2Fgulp-filename.svg)](https://badge.fury.io/gh/dhkatz%2Fgulp-filename) [![Build Status](https://travis-ci.com/dhkatz/gulp-filename.svg?branch=master)](https://travis-ci.com/dhkatz/gulp-filename)  [![Coverage Status](https://coveralls.io/repos/github/dhkatz/gulp-filename/badge.svg?branch=master)](https://coveralls.io/github/dhkatz/gulp-filename?branch=master) [![dependencies Status](https://david-dm.org/dhkatz/gulp-filename/status.svg)](https://david-dm.org/dhkatz/gulp-filename)
+[![GitHub version](https://badge.fury.io/gh/gulp-plugin%2Fcollect.svg)](https://badge.fury.io/gh/gulp-plugin%2Fcollect) [![Build](https://github.com/gulp-plugin/collect/actions/workflows/node.js.yml/badge.svg)](https://github.com/gulp-plugin/collect/actions/workflows/node.js.yml)  [![Coverage Status](https://coveralls.io/repos/github/gulp-plugin/collect/badge.svg?branch=master)](https://coveralls.io/github/gulp-plugin/collect?branch=master) [![dependencies Status](https://david-dm.org/gulp-plugin/collect/status.svg)](https://david-dm.org/gulp-plugin/collect)
 
 A JavaScript/TypeScript file gathering plugin for [gulp](https://github.com/gulpjs/gulp)
 
