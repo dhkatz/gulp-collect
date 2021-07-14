@@ -16,11 +16,10 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "rootDir": "./src",
-    "baseUrl": "."
+    "skipLibCheck": true
   },
   "include": [
-    "src",
-    "test"
+    "src"
   ],
   "exclude": [
     "lib",

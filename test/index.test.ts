@@ -1,8 +1,7 @@
 import { createReadStream } from 'fs'
 import { src, dest } from 'gulp'
-import source from 'vinyl-source-stream'
 
-import File from 'vinyl'
+import source from 'vinyl-source-stream'
 
 import collect from '../src'
 
@@ -29,7 +28,6 @@ describe('gulp-filename', (): void => {
       .on('end', (): void => {
         const files = collect.get('txt')
         expect(files).toHaveLength(2)
-        expect(files.every((f) => f instanceof File)).toBeTruthy()
 
         done()
       })
@@ -75,7 +73,6 @@ describe('gulp-filename', (): void => {
       .on('end', (): void => {
         const files = collect.get()
         expect(files).toHaveLength(1)
-        expect(files[0]).toBeInstanceOf(File)
 
         done()
       })
@@ -100,7 +97,6 @@ describe('gulp-filename', (): void => {
       .on('end', (): void => {
         const streams = collect.get('streams')
         expect(streams).toHaveLength(1)
-        expect(streams[0]).toBeInstanceOf(File)
 
         done()
       })
