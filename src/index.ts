@@ -1,112 +1,92 @@
-import vinyl from 'vinyl';
-import through from 'through2';
-import { Transform } from 'stream';
+import { Transform, TransformCallback } from 'stream'
 
-export type PathType = 'relative' | 'all' | 'absolute' | 'base';
+import File = require('vinyl')
 
-export interface File {
-    relative: string;
-    absolute: string;
-    base: string;
+export interface CollectorOptions {
+  /**
+   * Override existing files in the namespace list
+   */
+  override?: boolean
 }
 
-export interface Options {
-    /**
-     * Override existing files in the namespace list
-     */
-    override: boolean;
-}
+export class Collector extends Function {
+  private namespaces: Map<string | symbol, File[]> = new Map()
 
-export interface Filenames {
-    (name?: string | symbol, options?: Options): Transform;
-}
+  public DEFAULT = Symbol('default')
 
-export class Filenames extends Function {
-    private names: Map<string | symbol, File[]> = new Map();
+  public constructor() {
+    super()
 
-    public DEFAULT: symbol = Symbol('default');
-
-    public constructor() {
-        super();
-
-        return new Proxy(this, {
-            // eslint-disable-next-line
+    return new Proxy(this, {
+      // eslint-disable-next-line
             apply: (target: this, thisArg: this, args: any[]): any => {
-                return this.__call__(...args);
-            },
-        });
+        return this.__call__(...args)
+      },
+    })
+  }
+
+  public __call__(
+    namespace: string | symbol = this.DEFAULT,
+    options: CollectorOptions = {}
+  ): Transform {
+    if (options.override) {
+      this.namespaces.set(namespace, [])
     }
 
-    public __call__(name: string | symbol = this.DEFAULT, options: Options = { override: false }): Transform {
-        if (typeof name === 'string' && name === 'all') throw new Error(`'${name}' is a reserved namespace and cannot be used!`);
+    return new Transform({
+      objectMode: true,
+      transform: (file: File, encoding: BufferEncoding, callback: TransformCallback) => {
+        this.register(namespace, file)
 
-        if (options.override) {
-            this.names.set(name, []);
-        }
+        callback(null, file)
+      },
+    })
+  }
 
-        return through.obj((file: vinyl.StreamFile, enc: string, callback: through.TransformCallback): void => {
-            this.register(file, name, { ...options, override: false });
+  /**
+   * Retrieve an array of file names/paths for a given namespace.
+   * @param {string | symbol} namespace Custom file namespace name
+   */
+  public get(namespace: string | symbol = this.DEFAULT): File[] {
+    if (!this.namespaces.has(namespace)) this.namespaces.set(namespace, [])
 
-            callback(null, file);
-        });
+    return this.namespaces.get(namespace)
+  }
+
+  public all(): Map<string | symbol, File[]> {
+    return this.namespaces
+  }
+
+  /**
+   * Reset the namespace for the given namespace.
+   * @param {string | symbol} namespace Name of file namespace
+   */
+  public forget(namespace: string | symbol = this.DEFAULT): void {
+    this.namespaces.set(namespace, [])
+  }
+
+  /**
+   * Reset all filenames
+   */
+  public clear(): void {
+    this.namespaces = new Map<string | symbol, File[]>()
+  }
+
+  public register(namespace: string | symbol = this.DEFAULT, file: File): void {
+    if (!this.namespaces.has(namespace)) {
+      this.namespaces.set(namespace, [])
     }
 
-    /**
-     * Retrieve an array of file names/paths for a given namespace.
-     * @param {string | symbol} name Custom file namespace name
-     * @param {PathType} type Type of path to retrieve for each file
-     */
-    public get(name: 'all', type?: PathType): Map<string | symbol, File[]>;
-    public get(name?: string | symbol, type?: PathType): string[];
-    public get(name: string | symbol, type: 'all'): File[];
-    public get(name: 'all' | string | symbol = this.DEFAULT, type: PathType = 'relative'): Map<string | symbol, File[]> | string[] | File[] {
-        if (typeof name === 'string' && name === 'all') return this.names;
+    this.namespaces.get(namespace).push(file)
+  }
 
-        /* istanbul ignore next */
-        if (!this.names.has(name)) this.names.set(name, []);
-
-        const files = this.names.get(name);
-
-        switch (type) {
-            case 'all':
-                return files;
-            case 'absolute':
-                return files.map((file: File): string => file.absolute);
-            case 'base':
-                return files.map((file: File): string => file.base);
-            case 'relative':
-            default:
-                return files.map((file: File): string => file.relative);
-        }
-    }
-
-    /**
-     * Reset the namespace for the given namespace.
-     * @param {string | symbol} name Name of file namespace
-     */
-    public forget(name: 'all' | string | symbol = this.DEFAULT): void {
-        if (typeof name === 'string' && name === 'all') {
-            this.names = new Map();
-        } else {
-            this.names.set(name, []);
-        }
-    }
-
-    public register(file: vinyl.StreamFile, name: string | symbol = this.DEFAULT, options: Options = { override: false }): void {
-        if (options.override || !this.names.has(name)) {
-            this.names.set(name, []);
-        }
-
-        this.names.get(name).push({
-            relative: file.relative,
-            absolute: file.path,
-            base: file.base,
-        });
-    }
+  public [Symbol.iterator](): IterableIterator<[string | symbol, File[]]> {
+    return this.namespaces.entries()
+  }
 }
 
-const filenames = new Filenames();
+const collect = new Collector()
 
-module.exports = filenames;
+module.exports = collect
 
-export default filenames;
+export default collect

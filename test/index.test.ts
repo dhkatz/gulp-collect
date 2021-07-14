@@ -1,162 +1,123 @@
-import { createReadStream } from 'fs';
-import { isAbsolute } from 'path';
-import { src, dest } from 'gulp';
-import { Transform } from 'stream';
-import source from 'vinyl-source-stream';
+import { createReadStream } from 'fs'
+import { src, dest } from 'gulp'
+import source from 'vinyl-source-stream'
 
-import filenames from '../src';
+import File from 'vinyl'
 
+import collect from '../src'
 
 describe('gulp-filename', (): void => {
-    afterEach((): void => {
-        filenames.forget('all');
-    });
+  afterEach((): void => {
+    collect.clear()
+  })
 
-    it('Should grab the name of every file that passes through it', (done): void => {
-        src('test/files/**/*.*')
-            .pipe(filenames())
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get()).toEqual(['a.cc', 'a.empty', 'a.txt', 'b.txt']);
+  it('Should grab the name of every file that passes through it', (done): void => {
+    src('test/files/**/*.*')
+      .pipe(collect())
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        expect(collect.get()).toHaveLength(4)
 
-                done();
-            });
-    });
+        done()
+      })
+  })
 
-    it('Should support absolute paths', (done): void => {
-        src('test/files/**/*.*')
-            .pipe(filenames())
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                filenames.get(filenames.DEFAULT, 'absolute').forEach((file: string): void => {
-                    expect(isAbsolute(file)).toBeTruthy();
-                });
+  it('Supports namespacing', (done): void => {
+    src('test/files/**/*.txt')
+      .pipe(collect('txt'))
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        const files = collect.get('txt')
+        expect(files).toHaveLength(2)
+        expect(files.every((f) => f instanceof File)).toBeTruthy()
 
-                done();
-            });
-    });
+        done()
+      })
+  })
 
-    it('Should support base paths', (done): void => {
-        src('test/files/**/*.*')
-            .pipe(filenames())
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                filenames.get(filenames.DEFAULT, 'base').forEach((file: string): void => {
-                    expect(isAbsolute(file)).toBeTruthy();
-                });
+  it('Can forget', (done): void => {
+    src('test/files/**/*.txt')
+      .pipe(collect('txt'))
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        expect(collect.get('txt')).toHaveLength(2)
 
-                done();
-            });
-    });
+        collect.forget('txt')
 
-    it('Supports namespacing', (done): void => {
+        expect(collect.get('txt')).toHaveLength(0)
+
+        done()
+      })
+  })
+
+  it('Support overriding previous file on new one through override', (done): void => {
+    src('test/files/**/*.*')
+      .pipe(collect('override'))
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        expect(collect.get('override')).toHaveLength(4)
+
         src('test/files/**/*.txt')
-            .pipe(filenames('txt'))
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get('txt')).toEqual(['a.txt', 'b.txt']);
+          .pipe(collect('override', { override: true }))
+          .pipe(dest('.temp/'))
+          .on('end', (): void => {
+            expect(collect.get('override')).toHaveLength(2)
 
-                done();
-            });
-    });
+            done()
+          })
+      })
+  })
 
-    it('Can retrieve different things using options', (done): void => {
-        src('test/files/**/*.txt')
-            .pipe(filenames('txt'))
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(typeof filenames.get('txt', 'all')[0]).toBe('object');
-                expect(typeof filenames.get('txt', 'relative')[0]).toBe('string');
+  it('Supports empty files', (done): void => {
+    src('test/files/**/*.empty')
+      .pipe(collect())
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        const files = collect.get()
+        expect(files).toHaveLength(1)
+        expect(files[0]).toBeInstanceOf(File)
 
-                done();
-            });
-    });
+        done()
+      })
+  })
 
-    it('Can forget', (done): void => {
-        src('test/files/**/*.txt')
-            .pipe(filenames('txt'))
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get('txt')).toHaveLength(2);
+  it("Should allow the 'default' namespace", (done): void => {
+    src('test/files/**/*.*')
+      .pipe(collect('default'))
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        expect(collect.get('default')).toHaveLength(4)
 
-                filenames.forget('txt');
+        done()
+      })
+  })
 
-                expect(filenames.get('txt')).toHaveLength(0);
+  it('Works with streams', (done): void => {
+    createReadStream('test/files/a.cc')
+      .pipe(source('a.cc'))
+      .pipe(collect('streams'))
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        const streams = collect.get('streams')
+        expect(streams).toHaveLength(1)
+        expect(streams[0]).toBeInstanceOf(File)
 
-                done();
-            });
-    });
+        done()
+      })
+  })
 
-    it('Support overriding previous file on new one through override', (done): void => {
-        src('test/files/**/*.*')
-            .pipe(filenames('override'))
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get('override')).toEqual(['a.cc', 'a.empty', 'a.txt', 'b.txt']);
+  it('Should allow retrieving all namespaces', (done): void => {
+    src('test/files/**/*.*')
+      .pipe(collect())
+      .pipe(dest('.temp/'))
+      .on('end', (): void => {
+        const names = collect.all()
 
-                src('test/files/**/*.txt')
-                    .pipe(filenames('override', { override: true }))
-                    .pipe(dest('.temp/'))
-                    .on('end', (): void => {
-                        expect(filenames.get('override')).toHaveLength(2);
+        expect(names).toBeInstanceOf(Map)
+        expect(names.size).toBe(1)
+        expect(names.get(collect.DEFAULT)).toHaveLength(4)
 
-                        done();
-                    });
-            });
-    });
-
-    it('Supports empty files', (done): void => {
-        src('test/files/**/*.empty')
-            .pipe(filenames())
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get()).toEqual(['a.empty']);
-
-                done();
-            });
-    });
-
-    it('Should not allow the \'all\' namespace', (done): void => {
-        expect(((): Transform => src('test/files/**/*.empty').pipe(filenames('all')))).toThrow();
-
-        done();
-    });
-
-    it('Should allow the \'default\' namespace', (done): void => {
-        src('test/files/**/*.*')
-            .pipe(filenames('default'))
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get('default')).toEqual(['a.cc', 'a.empty', 'a.txt', 'b.txt']);
-
-                done();
-            });
-    });
-
-    it('Works with streams', (done): void => {
-        createReadStream('test/files/a.cc')
-            .pipe(source('a.cc'))
-            .pipe(filenames('streams'))
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                expect(filenames.get('streams')).toEqual(['a.cc']);
-
-                done();
-            });
-    });
-
-    it('Should allow retrieving the all namespace', (done): void => {
-        src('test/files/**/*.*')
-            .pipe(filenames())
-            .pipe(dest('.temp/'))
-            .on('end', (): void => {
-                const names = filenames.get('all');
-
-                expect(names).toBeInstanceOf(Map);
-                expect(names.size).toBe(1);
-                expect(names.get(filenames.DEFAULT).length).toBe(4);
-
-                done();
-            });
-    });
-});
+        done()
+      })
+  })
+})

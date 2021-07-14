@@ -1,14 +1,13 @@
-
-# gulp-filenames
+# gulp-collect
 
 [![GitHub version](https://badge.fury.io/gh/dhkatz%2Fgulp-filename.svg)](https://badge.fury.io/gh/dhkatz%2Fgulp-filename) [![Build Status](https://travis-ci.com/dhkatz/gulp-filename.svg?branch=master)](https://travis-ci.com/dhkatz/gulp-filename)  [![Coverage Status](https://coveralls.io/repos/github/dhkatz/gulp-filename/badge.svg?branch=master)](https://coveralls.io/github/dhkatz/gulp-filename?branch=master) [![dependencies Status](https://david-dm.org/dhkatz/gulp-filename/status.svg)](https://david-dm.org/dhkatz/gulp-filename)
 
-A JavaScript/TypeScript file name gathering plugin for [gulp](https://github.com/gulpjs/gulp)
+A JavaScript/TypeScript file gathering plugin for [gulp](https://github.com/gulpjs/gulp)
 
 ## Installation
 
 ```shell
-npm install --save-dev gulp-filename
+npm install --save-dev @dhkatz/gulp-collect
 ```
 
 ## Usage
@@ -16,48 +15,18 @@ npm install --save-dev gulp-filename
 Then, add it to your `gulpfile.js`:
 
 ```typescript
-const filenames = require('gulp-filename');
+const collect = require('gulp-collect');
 
 gulp.src('src/**/*.ts')
-	.pipe(filenames('typescript'))
+	.pipe(collect('typescript'))
 	.pipe(gulp.dest('dist/'));
 
 gulp.src('src/**/*.js')
-  .pipe(filenames('javascript'))
+  .pipe(collect('javascript'))
   .pipe(gulp.dest('dist/'));
 
 const files = filenames.get('typescript') // ['a.ts','b.ts']
 ```
-
-## API
-
-### filenames([name], [options])
-
-#### name
-
-Namespace the filenames. Do not use the name "all" which is reserved by gulp-filenames to retrieve all namespaces.
-
-### options
-
-#### override (default: false)
-
-Override previous files within the specified namespace when a new collection begins
-
-### filenames.get([name], [type])
-
-#### name
-Get only these filenames ("all" to get everything)
-
-#### type
-
-"relative" or "absolute" or "base" for an array of filenames
-
-"all" for an array of objects
-
-### filenames.forget([name])
-
-#### name
-Forget the filenames stored in namespace "name" ("all" to forget all files). gulp-filenames does not clear a namespace between runs by design.
 
 ## License
 

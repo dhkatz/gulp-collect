@@ -2,36 +2,28 @@
   "compilerOptions": {
     /* Module/Target Options */
     "target": "es6",
-    "lib": [
-      "es2017",
-      "esnext.asynciterable",
-      "dom",
-      "es2018"
-    ],
+    "lib": ["es2019"],
     "module": "commonjs",
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "declaration": true,
     "outDir": "./lib",
     "declarationDir": "./typings",
     /* Strict Type-Checking Options */
     "alwaysStrict": true,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
     /* Basic Options */
-    "importHelpers": true,
     /* Extra Options */
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "rootDir": "./src",
     "baseUrl": "."
   },
   "include": [
-    "src"
+    "src",
+    "test"
   ],
   "exclude": [
     "lib",
-    "node_modules",
+    "node_modules"
   ]
 }
