@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Register every file that has passed through a gulp stream.",
   "main": "lib/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "lib/",
     "typings/",
