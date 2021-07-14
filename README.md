@@ -1,6 +1,6 @@
-# @gulp-plugin/collect
+# @gulp-plugin/collect ![npm (custom registry)](https://img.shields.io/npm/v/@gulp-plugin/collect?logo=npm) [![GitHub Package Registry version](https://img.shields.io/github/release/gulp-plugin/collect.svg?label=gpr&logo=github)](https://github.com/gulp-plugin/collect/packages/)
 
-[![GitHub version](https://badge.fury.io/gh/gulp-plugin%2Fcollect.svg)](https://badge.fury.io/gh/gulp-plugin%2Fcollect) [![Build](https://github.com/gulp-plugin/collect/actions/workflows/node.js.yml/badge.svg)](https://github.com/gulp-plugin/collect/actions/workflows/node.js.yml)  [![Coverage Status](https://coveralls.io/repos/github/gulp-plugin/collect/badge.svg?branch=master)](https://coveralls.io/github/gulp-plugin/collect?branch=master) [![dependencies Status](https://david-dm.org/gulp-plugin/collect/status.svg)](https://david-dm.org/gulp-plugin/collect)
+[![Build](https://github.com/gulp-plugin/collect/actions/workflows/node.js.yml/badge.svg)](https://github.com/gulp-plugin/collect/actions/workflows/node.js.yml)  [![Coverage Status](https://coveralls.io/repos/github/gulp-plugin/collect/badge.svg?branch=master)](https://coveralls.io/github/gulp-plugin/collect?branch=master) [![dependencies Status](https://david-dm.org/gulp-plugin/collect/status.svg)](https://david-dm.org/gulp-plugin/collect)
 
 A JavaScript/TypeScript file gathering plugin for [gulp](https://github.com/gulpjs/gulp)
 
