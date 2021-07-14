@@ -1,5 +1,5 @@
 {
-  "name": "@dhkatz/gulp-collect",
+  "name": "@gulp-plugin/collect",
   "version": "1.0.0",
   "description": "Register every file that has passed through a gulp stream.",
   "main": "lib/index.js",
@@ -31,7 +31,7 @@
       "email": "bmacnaughton@gmail.com"
     }
   ],
-  "repository": "dhkatz/gulp-filename",
+  "repository": "gulp-plugin/collect",
   "scripts": {
     "build": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",
