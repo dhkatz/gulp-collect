@@ -1,6 +1,6 @@
 {
   "name": "@gulp-plugin/collect",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Register every file that has passed through a gulp stream.",
   "main": "lib/index.js",
   "publishConfig": {
